@@ -1,19 +1,61 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h3>掲示板に投稿する</h3>
+    <label for="name">ニックネーム：</label>
+    <input type="text" id="name" v-model="name" />
+    <br /><br />
+    <label for="comment">コメント：</label>
+    <textarea id="comment" v-model="comment" cols="30" rows="10"></textarea>
+    <button @click="createComent">コメントを送信</button>
+    <h2>掲示板</h2>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from "axios";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      name: "",
+      comment: "",
+    };
+  },
+  created() {
+    axios
+      .get(
+        "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments"
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  },
+  methods: {
+    createComent() {
+      axios
+        .post(
+          "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments",
+          {
+            fields: {
+              name: {
+                stringValue: this.name,
+              },
+              comment: {
+                stringValue: this.comment,
+              },
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      this.name = "";
+      this.comment = "";
+    },
+  },
+};
 </script>
 
 <style>
