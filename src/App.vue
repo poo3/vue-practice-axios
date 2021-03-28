@@ -8,6 +8,10 @@
     <textarea id="comment" v-model="comment" cols="30" rows="10"></textarea>
     <button @click="createComent">コメントを送信</button>
     <h2>掲示板</h2>
+    <div v-for="post in posts" :key="post.name">
+      <div>name:{{ post.fields.name.stringValue }}</div>
+      <div>コメント:{{ post.fields.comment.stringValue }}</div>
+    </div>
   </div>
 </template>
 
@@ -18,6 +22,7 @@ export default {
     return {
       name: "",
       comment: "",
+      posts: [],
     };
   },
   created() {
@@ -26,31 +31,25 @@ export default {
         "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments"
       )
       .then((response) => {
+        this.posts = response.data.documents;
         console.log(response);
       });
   },
   methods: {
     createComent() {
-      axios
-        .post(
-          "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments",
-          {
-            fields: {
-              name: {
-                stringValue: this.name,
-              },
-              comment: {
-                stringValue: this.comment,
-              },
+      axios.post(
+        "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments",
+        {
+          fields: {
+            name: {
+              stringValue: this.name,
             },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            comment: {
+              stringValue: this.comment,
+            },
+          },
+        }
+      );
       this.name = "";
       this.comment = "";
     },
