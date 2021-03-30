@@ -26,30 +26,23 @@ export default {
     };
   },
   created() {
-    axios
-      .get(
-        "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments"
-      )
-      .then((response) => {
-        this.posts = response.data.documents;
-        console.log(response);
-      });
+    axios.get("/comments").then((response) => {
+      this.posts = response.data.documents;
+      console.log(response);
+    });
   },
   methods: {
     createComent() {
-      axios.post(
-        "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents/comments",
-        {
-          fields: {
-            name: {
-              stringValue: this.name,
-            },
-            comment: {
-              stringValue: this.comment,
-            },
+      axios.post("/comments", {
+        fields: {
+          name: {
+            stringValue: this.name,
           },
-        }
-      );
+          comment: {
+            stringValue: this.comment,
+          },
+        },
+      });
       this.name = "";
       this.comment = "";
     },
