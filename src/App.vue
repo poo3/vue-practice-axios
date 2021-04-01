@@ -1,54 +1,19 @@
 <template>
   <div id="app">
-    <h3>掲示板に投稿する</h3>
-    <label for="name">ニックネーム：</label>
-    <input type="text" id="name" v-model="name" />
-    <br /><br />
-    <label for="comment">コメント：</label>
-    <textarea id="comment" v-model="comment" cols="30" rows="10"></textarea>
-    <button @click="createComent">コメントを送信</button>
-    <h2>掲示板</h2>
-    <div v-for="post in posts" :key="post.name">
-      <div>name:{{ post.fields.name.stringValue }}</div>
-      <div>コメント:{{ post.fields.comment.stringValue }}</div>
-    </div>
+    <header>
+      <router-link to="/" class="header-item">コメント</router-link>
+      <router-link to="/login" class="header-item">ログイン</router-link>
+      <router-link to="/register" class="header-item">登録</router-link>
+    </header>
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-import axios from "./axios-auth";
-export default {
-  data() {
-    return {
-      name: "",
-      comment: "",
-      posts: [],
-    };
-  },
-  created() {
-    axios.get("/comments").then((response) => {
-      this.posts = response.data.documents;
-      console.log(response);
-    });
-  },
-  methods: {
-    createComent() {
-      axios.post("/comments", {
-        fields: {
-          name: {
-            stringValue: this.name,
-          },
-          comment: {
-            stringValue: this.comment,
-          },
-        },
-      });
-      this.name = "";
-      this.comment = "";
-    },
-  },
-};
-</script>
+<style scoped>
+.header-item {
+  padding: 5px;
+}
+</style>
 
 <style>
 #app {
