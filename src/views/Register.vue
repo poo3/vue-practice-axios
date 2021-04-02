@@ -23,7 +23,7 @@ export default {
   methods: {
     createUser() {
       axios
-        .post("/accounts:signUp?key=AIzaSyBVU9kIkCmcA_Bpwk6tj4banY7KKrxggsI", {
+        .post(process.env.VUE_APP_FIREBASE_API_KEY, {
           email: this.email,
           password: this.password,
           returnSecureToken: true,
