@@ -5,19 +5,35 @@
     <input type="text" id="email" v-model="email" />
     <br /><br />
     <label for="name">パスワード:</label>
-    <input type="text" id="password" v-model="password" />
+    <input type="password" id="password" v-model="password" />
     <br /><br />
-    <button @click="createComent">コメントを送信</button>
+    <button @click="login">ログイン</button>
   </div>
 </template>
 
 <script>
+import axios from "../axios-auth";
 export default {
   data() {
     return {
       email: "",
       password: "",
     };
+  },
+  methods: {
+    login() {
+      axios
+        .post(process.env.VUE_APP_FIREBASE_SIGNIN_KEY, {
+          email: this.email,
+          password: this.password,
+          returnSecureToken: true,
+        })
+        .then((response) => {
+          console.log(response);
+        });
+      this.email = "";
+      this.password = "";
+    },
   },
 };
 </script>
