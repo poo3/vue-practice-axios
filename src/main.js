@@ -4,8 +4,7 @@ import axios from "axios";
 import router from "./router";
 
 Vue.config.productionTip = false;
-axios.defaults.baseURL =
-  "https://firestore.googleapis.com/v1/projects/http-vuejs-77e10/databases/(default)/documents";
+axios.defaults.baseURL = process.env.VUE_APP_FIRESTORE_URL;
 
 axios.interceptors.request.use(
   (config) => {
