@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -25,7 +26,31 @@ export default {
       posts: [],
     };
   },
-  methods: {},
+  created() {
+    axios.get("/comments").then((response) => {
+      this.posts = response.data.documents;
+    });
+  },
+  methods: {
+    createComent() {
+      axios
+        .post("/comments", {
+          fields: {
+            name: {
+              stringValue: this.name,
+            },
+            comment: {
+              stringValue: this.comment,
+            },
+          },
+        })
+        .then((response) => {
+          this.name = "";
+          this.comment = "";
+          console.log(response);
+        });
+    },
+  },
 };
 </script>
 
