@@ -5,13 +5,14 @@
     <input type="text" id="email" v-model="email" />
     <br /><br />
     <label for="name">パスワード:</label>
-    <input type="text" id="password" v-model="password" />
+    <input type="password" id="password" v-model="password" />
     <br /><br />
-    <button @click="createComent">コメントを送信</button>
+    <button @click="createUser">登録</button>
   </div>
 </template>
 
 <script>
+import axios from "../axios-auth";
 export default {
   data() {
     return {
